@@ -122,9 +122,11 @@ h2 em { font-style: normal; color: var(--accent); }
 .about-mark { position: relative; min-height: 385px; overflow: hidden; border-radius: 22px; color: white; background: var(--inverse); }
 .about-portrait { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; }
 .about-mark::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(9, 9, 11, .88), rgba(9, 9, 11, .04) 62%); }
-.about-gallery-controls { position: absolute; z-index: 2; top: 16px; right: 16px; display: flex; gap: 8px; }
-.about-gallery-controls button { display: grid; width: 36px; height: 36px; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .42); border-radius: 50%; color: white; background: rgba(16, 16, 18, .34); backdrop-filter: blur(10px); transition: background-color .18s ease, transform .18s ease; }
-.about-gallery-controls button:hover { background: rgba(16, 16, 18, .68); transform: translateY(-2px); }
+.about-gallery-controls { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.about-gallery-controls button { position: absolute; top: 50%; display: grid; width: 38px; height: 38px; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .42); border-radius: 50%; color: white; background: rgba(16, 16, 18, .34); backdrop-filter: blur(10px); pointer-events: auto; transform: translateY(-50%); transition: background-color .18s ease, transform .18s ease; }
+.about-gallery-controls button:first-child { left: 14px; }
+.about-gallery-controls button:last-child { right: 14px; }
+.about-gallery-controls button:hover { background: rgba(16, 16, 18, .68); transform: translateY(-50%) scale(1.06); }
 .about-location { position: absolute; z-index: 1; left: 25px; right: 25px; bottom: 23px; }
 .about-mark b { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; color: rgba(255, 255, 255, .74); }
 .about-copy { max-width: 650px; }
