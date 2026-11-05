@@ -154,10 +154,10 @@ h2 em { font-style: normal; color: var(--accent); }
 .tech-filters button { padding: 11px 19px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: transparent; font-size: 13px; font-weight: 600; transition: .18s ease; }
 .tech-filters button:hover { border-color: var(--text); color: var(--text); }
 .tech-filters button.active { border-color: var(--inverse); color: var(--inverse-text); background: var(--inverse); }
-.tech-card-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
-.tech-card { min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 11px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.tech-card-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.tech-card { min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .tech-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow); }
-.tech-glyph { display: grid; min-width: 42px; min-height: 42px; place-items: center; font-size: 20px; font-weight: 800; letter-spacing: -.09em; }
+.tech-glyph { display: grid; min-width: 55px; min-height: 48px; place-items: center; font-size: 25px; font-weight: 800; letter-spacing: -.09em; }
 .tech-card p { margin: 0; color: var(--text); font-size: 15px; font-weight: 600; text-align: center; }
 .tech-card small { color: var(--muted); font-size: 10px; }
 
@@ -291,7 +291,7 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
   .tech-filters { margin-top: 42px; }
   .tech-filters button { padding: 9px 14px; font-size: 12px; }
   .tech-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .tech-card { min-height: 155px; }
+  .tech-card { min-height: 132px; }
   .tech-card p { font-size: 13px; }
   .project-card { padding: 12px; }
   .project-visual, .project-wide .project-visual { min-height: 220px; padding: 17px; }
