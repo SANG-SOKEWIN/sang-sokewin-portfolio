@@ -1,20 +1,15 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  Braces,
-  Check,
   ChevronRight,
-  Code2,
   Download,
   Mail,
   MapPin,
   Menu,
   MoveRight,
-  Sparkles,
   X,
 } from "lucide-react";
 import {
@@ -25,7 +20,6 @@ import {
   useRef,
   useState,
 } from "react";
-import type { Group } from "three";
 import {
   achievements,
   events,
@@ -33,57 +27,25 @@ import {
   portfolio,
   projects,
   roles,
-  stack,
 } from "./content";
 
-const nav = ["Home", "About", "Stack", "Projects", "Experience", "Contact"];
-
-function Orb() {
-  const group = useRef<Group>(null);
-  useFrame((state) => {
-    if (group.current) {
-      group.current.rotation.x = state.clock.elapsedTime * 0.12;
-      group.current.rotation.y = state.clock.elapsedTime * 0.18;
-    }
-  });
-  return (
-    <group ref={group}>
-      <mesh>
-        <icosahedronGeometry args={[1.35, 2]} />
-        <meshStandardMaterial
-          color="#69c6ff"
-          emissive="#0b5fff"
-          emissiveIntensity={0.45}
-          wireframe
-          transparent
-          opacity={0.9}
-        />
-      </mesh>
-      <mesh rotation={[0.45, 0.3, 0]}>
-        <torusGeometry args={[1.62, 0.012, 12, 96]} />
-        <meshBasicMaterial color="#d1f4ff" transparent opacity={0.7} />
-      </mesh>
-      <pointLight color="#1aa3ff" intensity={32} distance={7} />
-    </group>
-  );
-}
-function TechSphere() {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setReady(true));
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-  return (
-    <div className="tech-sphere" aria-hidden="true">
-      {ready && (
-        <Canvas camera={{ position: [0, 0, 4.7], fov: 42 }}>
-          <ambientLight intensity={0.8} />
-          <Orb />
-        </Canvas>
-      )}
-    </div>
-  );
-}
+const nav = ["About", "Stack", "Projects", "Experience", "Contact"];
+const techItems = [
+  { name: "Python", group: "Languages", glyph: "Py", color: "#4e90ca" },
+  { name: "Java", group: "Languages", glyph: "J", color: "#d86645" },
+  { name: "C++", group: "Languages", glyph: "C+", color: "#5d8cf7" },
+  { name: "JavaScript", group: "Languages", glyph: "JS", color: "#f1d94e" },
+  { name: "HTML", group: "Languages", glyph: "</>", color: "#ea5b3e" },
+  { name: "SQLite", group: "Data", glyph: "SQL", color: "#45a6c7" },
+  { name: "FastAPI", group: "Frameworks", glyph: "F", color: "#21b98e" },
+  { name: "React", group: "Frameworks", glyph: "◌", color: "#61dafb" },
+  { name: "Vite", group: "Frameworks", glyph: "V", color: "#a78bfa" },
+  { name: "customtkinter", group: "Frameworks", glyph: "Tk", color: "#60a5fa" },
+  { name: "docxtpl", group: "Frameworks", glyph: "DOC", color: "#65b1eb" },
+  { name: "Microsoft Excel", group: "Tools", glyph: "X", color: "#33b66a" },
+  { name: "Microsoft Office", group: "Tools", glyph: "O", color: "#f06d43" },
+  { name: "Google Workspace", group: "Tools", glyph: "G", color: "#68a5ed" },
+] as const;
 function AssetPlaceholder({
   label,
   className = "",
@@ -158,6 +120,7 @@ export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cursor, setCursor] = useState({ x: -200, y: -200 });
   const [experience, setExperience] = useState<"roles" | "events">("roles");
+  const [techFilter, setTechFilter] = useState("All");
   const [activeEvent, setActiveEvent] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const reduce = useReducedMotion();
@@ -195,7 +158,7 @@ export default function Portfolio() {
       <div className="site-noise" aria-hidden="true" />
       <header className="nav-wrap">
         <a href="#home" className="monogram" aria-label="Back to home">
-          SK<span>.</span>
+          SK.
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {nav.map((item) => (
@@ -237,19 +200,15 @@ export default function Portfolio() {
         </AnimatePresence>
       </header>
       <section id="home" className="hero section-shell">
-        <div className="hero-grid" aria-hidden="true" />
+        <div className="hero-constellation" aria-hidden="true" />
         <motion.div
           className="hero-copy"
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <p className="eyebrow">
-            <Sparkles size={14} /> PORTFOLIO / 2026
-          </p>
-          <h1>
-            Hi, I&apos;m <em>Sokewin.</em>
-          </h1>
+          <p className="hero-availability"><span /> Open to opportunities</p>
+          <h1>Sang Sokewin<span className="typing-caret">|</span></h1>
           <div className="role-window">
             <motion.div
               className="role-marquee"
@@ -270,11 +229,7 @@ export default function Portfolio() {
               ))}
             </motion.div>
           </div>
-          <p className="hero-description">
-            An IT Management and Computer Science student building practical
-            software while bringing analytical thinking, project coordination,
-            and leadership to every challenge.
-          </p>
+          <p className="hero-description">I&apos;m an IT Management and Computer Science student passionate about software, technology, and creating useful systems with care.</p>
           <div className="hero-actions">
             <MagneticLink href="#projects" className="button button-primary">
               Explore my work <ArrowDownRight size={17} />
@@ -291,28 +246,8 @@ export default function Portfolio() {
             <span>LinkedIn coming soon</span>
           </div>
         </motion.div>
-        <div className="hero-visual">
-          <div className="visual-orbit orbit-one" />
-          <div className="visual-orbit orbit-two" />
-          <TechSphere />
-          <div className="visual-card profile-card">
-            <AssetPlaceholder label="Profile photo / add later" />
-            <div>
-              <b>SANG Sokewin</b>
-              <span>Phnom Penh, Cambodia</span>
-            </div>
-          </div>
-          <div className="visual-card coordinate-card">
-            <span>00.01</span>
-            <b>
-              BUILD
-              <br />
-              WITH PURPOSE
-            </b>
-          </div>
-        </div>
         <a href="#about" className="scroll-cue">
-          SCROLL TO EXPLORE <ChevronRight size={16} />
+          Scroll to explore <ChevronRight size={16} />
         </a>
       </section>
       <section id="about" className="section-shell about">
@@ -375,35 +310,38 @@ export default function Portfolio() {
       </section>
       <section id="stack" className="section-shell stack-section">
         <Reveal className="section-heading stack-heading">
-          <p className="eyebrow">02 / TOOLKIT</p>
-          <h2>
-            A versatile <em>technical stack.</em>
-          </h2>
-          <p>
-            Tools I have used in coursework and hands-on projects, organized for
-            easy expansion as my practice grows.
-          </p>
+          <p className="eyebrow">TECH STACK</p>
+          <h2>Technologies I work with.</h2>
+          <p>Tools and languages I use to bring ideas into working software.</p>
         </Reveal>
-        <div className="stack-orbit" aria-hidden="true">
-          <Code2 />
-          <Braces />
-          <span>{"///"}</span>
-        </div>
-        <div className="stack-groups">
-          {stack.map((group, i) => (
-            <Reveal className="stack-group" key={group.group} delay={i * 0.1}>
-              <div className="stack-index">0{i + 1}</div>
-              <h3>{group.group}</h3>
-              <div className="tool-list">
-                {group.items.map((item) => (
-                  <span key={item}>
-                    {item}
-                    <Check size={13} />
-                  </span>
-                ))}
-              </div>
-            </Reveal>
+        <div className="tech-filters" role="tablist" aria-label="Technology category">
+          {["All", "Languages", "Frameworks", "Data", "Tools"].map((filter) => (
+            <button
+              key={filter}
+              className={techFilter === filter ? "active" : ""}
+              onClick={() => setTechFilter(filter)}
+              role="tab"
+              aria-selected={techFilter === filter}
+            >
+              {filter}
+            </button>
           ))}
+        </div>
+        <div className="tech-card-grid">
+          {techItems
+            .filter((item) => techFilter === "All" || item.group === techFilter)
+            .map((item, index) => (
+              <motion.article
+                className="tech-card"
+                key={item.name}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: index * 0.025 }}
+              >
+                <span className="tech-glyph" style={{ color: item.color }}>{item.glyph}</span>
+                <p>{item.name}</p>
+              </motion.article>
+            ))}
         </div>
       </section>
       <section id="projects" className="section-shell projects-section">
