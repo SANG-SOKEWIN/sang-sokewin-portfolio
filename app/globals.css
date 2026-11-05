@@ -157,7 +157,7 @@ h2 em { font-style: normal; color: var(--accent); }
 .tech-card-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
 .tech-card { min-height: 190px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 11px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .tech-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow); }
-.tech-glyph { display: grid; min-width: 55px; min-height: 55px; place-items: center; font-size: 25px; font-weight: 800; letter-spacing: -.09em; }
+.tech-glyph { display: grid; min-width: 42px; min-height: 42px; place-items: center; font-size: 20px; font-weight: 800; letter-spacing: -.09em; }
 .tech-card p { margin: 0; color: var(--text); font-size: 15px; font-weight: 600; text-align: center; }
 .tech-card small { color: var(--muted); font-size: 10px; }
 
