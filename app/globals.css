@@ -122,8 +122,10 @@ h2 em { font-style: normal; color: var(--accent); }
 .about-mark { position: relative; min-height: 385px; overflow: hidden; border-radius: 22px; color: white; background: var(--inverse); }
 .about-portrait { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; }
 .about-mark::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(9, 9, 11, .88), rgba(9, 9, 11, .04) 62%); }
-.about-mark > div { position: absolute; z-index: 1; left: 25px; right: 25px; bottom: 23px; }
-.about-mark p { margin: 0 0 17px; font-size: 24px; line-height: 1.15; letter-spacing: -.055em; font-weight: 600; }
+.about-gallery-controls { position: absolute; z-index: 2; top: 16px; right: 16px; display: flex; gap: 8px; }
+.about-gallery-controls button { display: grid; width: 36px; height: 36px; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .42); border-radius: 50%; color: white; background: rgba(16, 16, 18, .34); backdrop-filter: blur(10px); transition: background-color .18s ease, transform .18s ease; }
+.about-gallery-controls button:hover { background: rgba(16, 16, 18, .68); transform: translateY(-2px); }
+.about-location { position: absolute; z-index: 1; left: 25px; right: 25px; bottom: 23px; }
 .about-mark b { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; color: rgba(255, 255, 255, .74); }
 .about-copy { max-width: 650px; }
 .lead { color: var(--text); font-size: clamp(22px, 2.3vw, 31px); font-weight: 600; line-height: 1.32; letter-spacing: -.045em; }
@@ -137,12 +139,6 @@ h2 em { font-style: normal; color: var(--accent); }
 .milestone p { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
 .milestone h3 { margin: 45px 0 14px; font-size: 22px; line-height: 1.08; }
 .milestone span { display: block; color: var(--muted); font-size: 12px; line-height: 1.65; }
-.photo-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
-.photo-strip figure { height: 315px; margin: 0; overflow: hidden; border-radius: 16px; background: var(--surface-strong); }
-.photo-strip img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 37%; transition: transform .35s ease; }
-.photo-strip figure:nth-child(2) img { object-position: 50% 57%; }
-.photo-strip figure:hover img { transform: scale(1.035); }
-
 .stack-section { width: min(1450px, calc(100% - 64px)); }
 .stack-heading { max-width: 980px; }
 .stack-heading h2 { font-size: clamp(52px, 6.4vw, 92px); }
@@ -291,7 +287,6 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
   .tech-card p { font-size: 13px; }
   .project-card { padding: 12px; }
   .project-visual, .project-wide .project-visual { min-height: 220px; padding: 17px; }
-  .photo-strip figure { height: 220px; }
   .experience-control { align-items: flex-start; gap: 10px; flex-direction: column; }
   .events-grid { grid-template-columns: 1fr; }
   .event-card { min-height: 245px; }

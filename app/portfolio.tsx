@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
+  ChevronLeft,
   ChevronRight,
   Mail,
   MapPin,
@@ -38,6 +39,12 @@ const recognitionGroups = [
   { title: "Leadership", items: achievements.filter((item) => item.includes("Youth Leadership")) },
 ];
 
+const aboutPhotos = [
+  { src: "/assets/profile/gallery-study.jpg", alt: "Sang Sokewin by a lake", position: "50% 58%" },
+  { src: "/assets/profile/portrait-primary.jpg", alt: "Sang Sokewin in a striped shirt", position: "50% 37%" },
+  { src: "/assets/profile/portrait-secondary-converted.jpg", alt: "Sang Sokewin taking a mirror selfie", position: "50% 57%" },
+] as const;
+
 function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const reduce = useReducedMotion();
   return (
@@ -54,16 +61,28 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
 }
 
 export default function Portfolio() {
+  const reduceMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [experience, setExperience] = useState<"roles" | "events">("roles");
   const [techFilter, setTechFilter] = useState("All");
   const [activeEvent, setActiveEvent] = useState<string | null>(null);
+  const [aboutPhotoIndex, setAboutPhotoIndex] = useState(0);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem("sokewin-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    const rotation = window.setInterval(() => setAboutPhotoIndex((index) => (index + 1) % aboutPhotos.length), 4600);
+    return () => window.clearInterval(rotation);
+  }, [reduceMotion]);
+
+  const changeAboutPhoto = (direction: 1 | -1) => {
+    setAboutPhotoIndex((index) => (index + direction + aboutPhotos.length) % aboutPhotos.length);
+  };
 
   return (
     <main>
@@ -116,8 +135,24 @@ export default function Portfolio() {
         </Reveal>
         <div className="about-layout">
           <Reveal className="about-mark">
-            <img className="about-portrait" src="/assets/profile/gallery-study.jpg" alt="Sang Sokewin by a lake" />
-            <div><p>Learning in public.<br />Building with purpose.</p><b><MapPin size={17} /> Phnom Penh, Cambodia</b></div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.img
+                key={aboutPhotos[aboutPhotoIndex].src}
+                className="about-portrait"
+                src={aboutPhotos[aboutPhotoIndex].src}
+                alt={aboutPhotos[aboutPhotoIndex].alt}
+                style={{ objectPosition: aboutPhotos[aboutPhotoIndex].position }}
+                initial={{ opacity: 0, scale: 1.035 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.55, ease: "easeOut" }}
+              />
+            </AnimatePresence>
+            <div className="about-gallery-controls" aria-label="About photo gallery controls">
+              <button type="button" onClick={() => changeAboutPhoto(-1)} aria-label="Show previous photo"><ChevronLeft size={18} /></button>
+              <button type="button" onClick={() => changeAboutPhoto(1)} aria-label="Show next photo"><ChevronRight size={18} /></button>
+            </div>
+            <div className="about-location"><b><MapPin size={17} /> Phnom Penh, Cambodia</b></div>
           </Reveal>
           <Reveal className="about-copy" delay={0.1}>
             <p className="lead">I&apos;m pursuing a dual degree in IT Management and Computer Science at the American University of Phnom Penh and Fort Hays State University.</p>
@@ -128,10 +163,6 @@ export default function Portfolio() {
         <div className="milestone-grid">
           {milestones.map((item, index) => <Reveal className="milestone" key={item.title} delay={index * 0.06}><p>{item.eyebrow}</p><h3>{item.title}</h3><span>{item.text}</span></Reveal>)}
         </div>
-        <Reveal className="photo-strip" delay={0.08}>
-          <figure><img src="/assets/profile/portrait-primary.jpg" alt="Sang Sokewin in a striped shirt" /></figure>
-          <figure><img src="/assets/profile/portrait-secondary-converted.jpg" alt="Sang Sokewin taking a mirror selfie" /></figure>
-        </Reveal>
       </section>
 
       <section id="stack" className="section-shell stack-section">
