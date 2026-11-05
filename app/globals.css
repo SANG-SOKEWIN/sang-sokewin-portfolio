@@ -120,10 +120,10 @@ h2 em { font-style: normal; color: var(--accent); }
 .profile-stamp { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-start; }
 .profile-stamp span { font-size: clamp(94px, 11vw, 166px); font-weight: 800; letter-spacing: -.13em; line-height: .8; }
 .profile-stamp small { padding: 8px 10px; border-radius: 999px; background: var(--surface); color: var(--muted); font-weight: 700; font-size: 11px; }
-.profile-details { position: relative; z-index: 1; }
+.profile-details { position: relative; z-index: 2; align-self: flex-start; padding: 11px 13px; border: 1px solid color-mix(in srgb, var(--line) 78%, transparent); border-radius: 12px; background: color-mix(in srgb, var(--surface) 82%, transparent); backdrop-filter: blur(10px); }
 .profile-details p { margin-bottom: 8px; font-size: 14px; font-weight: 700; letter-spacing: .04em; line-height: 1.45; }
 .profile-details span { color: var(--muted); font-size: 13px; }
-.profile-orbit { position: absolute; width: 87%; aspect-ratio: 1; border: 1px solid color-mix(in srgb, var(--text) 23%, transparent); border-radius: 50%; left: 7%; top: 13%; transform: rotate(-20deg); }
+.profile-orbit { position: absolute; z-index: 0; width: 87%; aspect-ratio: 1; border: 1px solid color-mix(in srgb, var(--text) 23%, transparent); border-radius: 50%; left: 7%; top: 13%; transform: rotate(-20deg); }
 .profile-orbit::after { content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); right: 2%; top: 44%; }
 
 .about, .stack-section, .projects-section, .experience-section, .recognition-section, .contact-section { padding-top: 145px; }
