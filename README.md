@@ -21,4 +21,4 @@ The site does not display a phone number, date of birth, or residential address.
 
 ## GitHub Pages
 
-The workflow in `.github/workflows/deploy.yml` deploys the built static client to GitHub Pages after the repository is connected and Pages is enabled in the GitHub repository settings.
+The workflow in `.github/workflows/deploy.yml` runs `npm run build:pages`, a Vite static build configured with relative asset paths for GitHub Pages. Connect the repository to GitHub, enable Pages with **GitHub Actions** as its source, then push `main`.
