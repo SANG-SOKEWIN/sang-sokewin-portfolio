@@ -104,10 +104,8 @@ export default function Portfolio() {
             <div><span>Currently</span><strong>AUPP + Fort Hays State</strong></div>
           </div>
         </motion.div>
-        <motion.aside className="hero-profile" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.08 }} aria-label="Sang Sokewin profile summary">
-          <div className="profile-stamp"><span>SK</span><small>01</small></div>
-          <div className="profile-details"><p>IT MANAGEMENT +<br />COMPUTER SCIENCE</p><span>Student · Builder · Learner</span></div>
-          <div className="profile-orbit" aria-hidden="true" />
+        <motion.aside className="hero-profile" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.08 }}>
+          <img className="hero-portrait" src="/assets/profile/gallery-campus.jpg" alt="Sang Sokewin holding a certificate" />
         </motion.aside>
       </section>
 
@@ -117,7 +115,10 @@ export default function Portfolio() {
           <p>I work at the intersection of software, systems thinking, and community-led work.</p>
         </Reveal>
         <div className="about-layout">
-          <Reveal className="about-mark"><span>SK</span><p>Learning in public.<br />Building with purpose.</p><b><MapPin size={17} /> Phnom Penh, Cambodia</b></Reveal>
+          <Reveal className="about-mark">
+            <img className="about-portrait" src="/assets/profile/gallery-study.jpg" alt="Sang Sokewin by a lake" />
+            <div><p>Learning in public.<br />Building with purpose.</p><b><MapPin size={17} /> Phnom Penh, Cambodia</b></div>
+          </Reveal>
           <Reveal className="about-copy" delay={0.1}>
             <p className="lead">I&apos;m pursuing a dual degree in IT Management and Computer Science at the American University of Phnom Penh and Fort Hays State University.</p>
             <p>I enjoy creating software that makes a clear difference—whether that means streamlining a workflow, supporting language technology, or helping an event run well. My academic work has taken me from full-stack development to cloud foundations and intelligent robotics.</p>
@@ -127,6 +128,10 @@ export default function Portfolio() {
         <div className="milestone-grid">
           {milestones.map((item, index) => <Reveal className="milestone" key={item.title} delay={index * 0.06}><p>{item.eyebrow}</p><h3>{item.title}</h3><span>{item.text}</span></Reveal>)}
         </div>
+        <Reveal className="photo-strip" delay={0.08}>
+          <figure><img src="/assets/profile/portrait-primary.jpg" alt="Sang Sokewin in a striped shirt" /></figure>
+          <figure><img src="/assets/profile/portrait-secondary-converted.jpg" alt="Sang Sokewin taking a mirror selfie" /></figure>
+        </Reveal>
       </section>
 
       <section id="stack" className="section-shell stack-section">
