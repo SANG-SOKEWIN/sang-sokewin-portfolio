@@ -2,619 +2,202 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowDownRight,
   ArrowUpRight,
   ChevronRight,
-  Download,
   Mail,
   MapPin,
   Menu,
-  MoveRight,
+  Moon,
+  Sun,
   X,
 } from "lucide-react";
-import {
-  FormEvent,
-  MouseEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  achievements,
-  events,
-  milestones,
-  portfolio,
-  projects,
-  roles,
-} from "./content";
+import { MouseEvent, useEffect, useRef, useState } from "react";
+import { achievements, events, milestones, projects, roles } from "./content";
 
-const nav = ["About", "Stack", "Projects", "Experience", "Contact"];
+const nav = ["Home", "About", "Stack", "Projects", "Experience", "Contact"];
 const techItems = [
   { name: "Python", group: "Languages", glyph: "Py", color: "#4e90ca" },
   { name: "Java", group: "Languages", glyph: "J", color: "#d86645" },
   { name: "C++", group: "Languages", glyph: "C+", color: "#5d8cf7" },
-  { name: "JavaScript", group: "Languages", glyph: "JS", color: "#f1d94e" },
-  { name: "HTML", group: "Languages", glyph: "</>", color: "#ea5b3e" },
-  { name: "SQLite", group: "Data", glyph: "SQL", color: "#45a6c7" },
-  { name: "FastAPI", group: "Frameworks", glyph: "F", color: "#21b98e" },
-  { name: "React", group: "Frameworks", glyph: "◌", color: "#61dafb" },
-  { name: "Vite", group: "Frameworks", glyph: "V", color: "#a78bfa" },
-  { name: "customtkinter", group: "Frameworks", glyph: "Tk", color: "#60a5fa" },
-  { name: "docxtpl", group: "Frameworks", glyph: "DOC", color: "#65b1eb" },
-  { name: "Microsoft Excel", group: "Tools", glyph: "X", color: "#33b66a" },
-  { name: "Microsoft Office", group: "Tools", glyph: "O", color: "#f06d43" },
-  { name: "Google Workspace", group: "Tools", glyph: "G", color: "#68a5ed" },
+  { name: "JavaScript", group: "Languages", glyph: "JS", color: "#d8b836" },
+  { name: "HTML", group: "Languages", glyph: "</>", color: "#e25b41" },
+  { name: "SQLite", group: "Data", glyph: "SQL", color: "#328eb3" },
+  { name: "FastAPI", group: "Frameworks", glyph: "F", color: "#159875" },
+  { name: "React", group: "Frameworks", glyph: "◌", color: "#2baed5" },
+  { name: "Vite", group: "Frameworks", glyph: "V", color: "#755edc" },
+  { name: "customtkinter", group: "Frameworks", glyph: "Tk", color: "#4f8fcf" },
+  { name: "docxtpl", group: "Frameworks", glyph: "DOC", color: "#568fc3" },
+  { name: "Microsoft Excel", group: "Tools", glyph: "X", color: "#1e9c5a" },
+  { name: "Microsoft Office", group: "Tools", glyph: "O", color: "#e16745" },
+  { name: "Google Workspace", group: "Tools", glyph: "G", color: "#4d83de" },
 ] as const;
-function AssetPlaceholder({
-  label,
-  className = "",
-}: {
-  label: string;
-  className?: string;
-}) {
-  return (
-    <div className={`asset-placeholder ${className}`}>
-      <span className="asset-cross" />
-      <span className="asset-label">{label}</span>
-    </div>
-  );
-}
-function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+
+const recognitionGroups = [
+  { title: "Scholarships", items: achievements.filter((item) => item.includes("Scholarship")) },
+  { title: "Academic", items: achievements.filter((item) => item.includes("Baccalaureate") || item.includes("Mathematics")) },
+  { title: "Leadership", items: achievements.filter((item) => item.includes("Youth Leadership")) },
+];
+
+function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const reduce = useReducedMotion();
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y: 24 }}
+      initial={reduce ? false : { opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.55, delay }}
+      transition={{ duration: 0.5, delay }}
     >
       {children}
     </motion.div>
   );
 }
-function MagneticLink({
-  href,
-  children,
-  className = "",
-  onClick,
-}: {
-  href: string;
-  children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
-}) {
-  const [style, setStyle] = useState({ x: 0, y: 0 });
-  function move(e: MouseEvent<HTMLAnchorElement>) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setStyle({
-      x: (e.clientX - rect.left - rect.width / 2) * 0.13,
-      y: (e.clientY - rect.top - rect.height / 2) * 0.13,
-    });
-  }
-  return (
-    <motion.a
-      href={href}
-      className={className}
-      animate={style}
-      transition={{ type: "spring", stiffness: 280, damping: 18 }}
-      onMouseMove={move}
-      onMouseLeave={() => setStyle({ x: 0, y: 0 })}
-      onClick={onClick}
-    >
-      {children}
-    </motion.a>
-  );
-}
 
 export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cursor, setCursor] = useState({ x: -200, y: -200 });
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [experience, setExperience] = useState<"roles" | "events">("roles");
   const [techFilter, setTechFilter] = useState("All");
   const [activeEvent, setActiveEvent] = useState<string | null>(null);
-  const [sent, setSent] = useState(false);
-  const reduce = useReducedMotion();
+
   useEffect(() => {
-    if (reduce) return;
-    const onMove = (e: globalThis.MouseEvent) =>
-      setCursor({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [reduce]);
-  const subtitle = useMemo(
-    () => [
-      "IT Management & Computer Science Student",
-      "Developer",
-      "Technology Enthusiast",
-      "Problem Solver",
-      "Aspiring Technology Professional",
-    ],
-    [],
-  );
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem("sokewin-theme", theme);
+  }, [theme]);
+
   return (
     <main>
-      {!reduce && (
-        <>
-          <span
-            className="cursor-dot"
-            style={{ left: cursor.x, top: cursor.y }}
-          />
-          <span
-            className="cursor-aura"
-            style={{ left: cursor.x, top: cursor.y }}
-          />
-        </>
-      )}
-      <div className="site-noise" aria-hidden="true" />
       <header className="nav-wrap">
-        <a href="#home" className="monogram" aria-label="Back to home">
-          SK.
-        </a>
+        <a href="#home" className="monogram" aria-label="Back to home">SK.</a>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {nav.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`}>
-              {item}
-            </a>
-          ))}
+          {nav.map((item) => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}
         </nav>
-        <a className="availability" href="#contact">
-          <span /> Open to connect
-        </a>
-        <button
-          className="menu-button"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle navigation"
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? <X /> : <Menu />}
-        </button>
+        <div className="nav-actions">
+          <span className="availability"><i /> Open to opportunities</span>
+          <button
+            className="theme-toggle"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          >
+            {theme === "light" ? <Moon size={19} /> : <Sun size={19} />}
+          </button>
+          <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
+            {menuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
         <AnimatePresence>
           {menuOpen && (
-            <motion.nav
-              className="mobile-nav"
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-            >
-              {nav.map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ))}
+            <motion.nav className="mobile-nav" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              {nav.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)}>{item}</a>)}
             </motion.nav>
           )}
         </AnimatePresence>
       </header>
-      <section id="home" className="hero section-shell">
-        <div className="hero-constellation" aria-hidden="true" />
-        <motion.div
-          className="hero-copy"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          <p className="hero-availability"><span /> Open to opportunities</p>
-          <h1>Sang Sokewin<span className="typing-caret">|</span></h1>
-          <div className="role-window">
-            <motion.div
-              className="role-marquee"
-              animate={
-                reduce
-                  ? undefined
-                  : { y: ["0%", "-20%", "-40%", "-60%", "-80%"] }
-              }
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut",
-              }}
-            >
-              {subtitle.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </motion.div>
-          </div>
-          <p className="hero-description">I&apos;m an IT Management and Computer Science student passionate about software, technology, and creating useful systems with care.</p>
-          <div className="hero-actions">
-            <MagneticLink href="#projects" className="button button-primary">
-              Explore my work <ArrowDownRight size={17} />
-            </MagneticLink>
-            <MagneticLink href="#contact" className="button button-secondary">
-              Contact me <MoveRight size={17} />
-            </MagneticLink>
-          </div>
-          <div className="social-row">
-            <a href="mailto:sokewinsang@gmail.com">
-              <Mail size={17} /> Email
-            </a>
-            <span>GitHub coming soon</span>
-            <span>LinkedIn coming soon</span>
+
+      <section id="home" className="section-shell hero">
+        <motion.div className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
+          <p className="eyebrow">SOFTWARE · SYSTEMS · COMMUNITY</p>
+          <h1>Hi, I&apos;m Sang<br /><span>Sokewin.</span></h1>
+          <p className="hero-description">An IT Management and Computer Science student who enjoys turning practical ideas into dependable, people-centred software.</p>
+          <div className="hero-facts" aria-label="Personal summary">
+            <div><span>Based in</span><strong>Phnom Penh, Cambodia</strong></div>
+            <div><span>Currently</span><strong>AUPP + Fort Hays State</strong></div>
           </div>
         </motion.div>
-        <a href="#about" className="scroll-cue">
-          Scroll to explore <ChevronRight size={16} />
-        </a>
+        <motion.aside className="hero-profile" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.08 }} aria-label="Sang Sokewin profile summary">
+          <div className="profile-stamp"><span>SK</span><small>01</small></div>
+          <div className="profile-details"><p>IT MANAGEMENT +<br />COMPUTER SCIENCE</p><span>Student · Builder · Learner</span></div>
+          <div className="profile-orbit" aria-hidden="true" />
+        </motion.aside>
       </section>
+
       <section id="about" className="section-shell about">
-        <Reveal className="section-heading">
-          <p className="eyebrow">01 / ABOUT</p>
-          <h2>
-            Grounded in <em>curiosity.</em>
-            <br />
-            Built for impact.
-          </h2>
+        <Reveal className="section-heading section-heading-split">
+          <div><p className="eyebrow">01 / ABOUT</p><h2>A curious mind,<br /><em>rooted in useful work.</em></h2></div>
+          <p>I work at the intersection of software, systems thinking, and community-led work.</p>
         </Reveal>
         <div className="about-layout">
-          <Reveal className="about-photo">
-            <AssetPlaceholder label="Your profile photo belongs here" />
-            <div className="photo-chip">
-              <MapPin size={15} /> Phnom Penh, Cambodia
-            </div>
-          </Reveal>
-          <Reveal className="about-copy" delay={0.12}>
-            <p className="lead">
-              I&apos;m Sokewin, a student at the American University of Phnom
-              Penh pursuing a dual degree in IT Management and Computer Science
-              with Fort Hays State University.
-            </p>
-            <p>
-              I enjoy the space where software, systems thinking, and people
-              meet: translating ideas into useful tools, coordinating work with
-              care, and learning through ambitious projects. My academic work
-              spans full-stack development, cloud foundations, and intelligent
-              robotics.
-            </p>
-            <div className="stat-grid">
-              <div>
-                <strong>3.79</strong>
-                <span>GPA / 4.00</span>
-              </div>
-              <div>
-                <strong>2028</strong>
-                <span>Expected graduation</span>
-              </div>
-              <div>
-                <strong>2</strong>
-                <span>Real-world software projects</span>
-              </div>
-            </div>
-            <a className="text-link" href={portfolio.cvLink}>
-              <Download size={16} /> Request my CV <ArrowUpRight size={15} />
-            </a>
+          <Reveal className="about-mark"><span>SK</span><p>Learning in public.<br />Building with purpose.</p><b><MapPin size={17} /> Phnom Penh, Cambodia</b></Reveal>
+          <Reveal className="about-copy" delay={0.1}>
+            <p className="lead">I&apos;m pursuing a dual degree in IT Management and Computer Science at the American University of Phnom Penh and Fort Hays State University.</p>
+            <p>I enjoy creating software that makes a clear difference—whether that means streamlining a workflow, supporting language technology, or helping an event run well. My academic work has taken me from full-stack development to cloud foundations and intelligent robotics.</p>
+            <div className="stat-grid"><div><strong>3.79</strong><span>GPA / 4.00</span></div><div><strong>2028</strong><span>Expected graduation</span></div><div><strong>02</strong><span>Software projects</span></div></div>
           </Reveal>
         </div>
         <div className="milestone-grid">
-          {milestones.map((item, index) => (
-            <Reveal className="milestone" key={item.title} delay={index * 0.07}>
-              <p>{item.eyebrow}</p>
-              <h3>{item.title}</h3>
-              <span>{item.text}</span>
-            </Reveal>
-          ))}
+          {milestones.map((item, index) => <Reveal className="milestone" key={item.title} delay={index * 0.06}><p>{item.eyebrow}</p><h3>{item.title}</h3><span>{item.text}</span></Reveal>)}
         </div>
       </section>
+
       <section id="stack" className="section-shell stack-section">
-        <Reveal className="section-heading stack-heading">
-          <p className="eyebrow">TECH STACK</p>
-          <h2>Technologies I work with.</h2>
-          <p>Tools and languages I use to bring ideas into working software.</p>
-        </Reveal>
+        <Reveal className="section-heading stack-heading"><p className="eyebrow">02 / TECH STACK</p><h2>Technologies I work with.</h2><p>Tools and languages I use to take an idea from outline to working software.</p></Reveal>
         <div className="tech-filters" role="tablist" aria-label="Technology category">
-          {["All", "Languages", "Frameworks", "Data", "Tools"].map((filter) => (
-            <button
-              key={filter}
-              className={techFilter === filter ? "active" : ""}
-              onClick={() => setTechFilter(filter)}
-              role="tab"
-              aria-selected={techFilter === filter}
-            >
-              {filter}
-            </button>
-          ))}
+          {["All", "Languages", "Frameworks", "Data", "Tools"].map((filter) => <button key={filter} className={techFilter === filter ? "active" : ""} onClick={() => setTechFilter(filter)} role="tab" aria-selected={techFilter === filter}>{filter}</button>)}
         </div>
         <div className="tech-card-grid">
-          {techItems
-            .filter((item) => techFilter === "All" || item.group === techFilter)
-            .map((item, index) => (
-              <motion.article
-                className="tech-card"
-                key={item.name}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: index * 0.025 }}
-              >
-                <span className="tech-glyph" style={{ color: item.color }}>{item.glyph}</span>
-                <p>{item.name}</p>
-              </motion.article>
-            ))}
+          {techItems.filter((item) => techFilter === "All" || item.group === techFilter).map((item, index) => <motion.article className="tech-card" key={item.name} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, delay: index * 0.025 }}><span className="tech-glyph" style={{ color: item.color }}>{item.glyph}</span><p>{item.name}</p><small>{item.group}</small></motion.article>)}
         </div>
       </section>
+
       <section id="projects" className="section-shell projects-section">
-        <Reveal className="section-heading projects-heading">
-          <p className="eyebrow">03 / SELECTED WORK</p>
-          <h2>
-            Ideas, shaped into <em>usable systems.</em>
-          </h2>
-          <p>
-            Two projects that reflect my interest in thoughtful interfaces,
-            language technology, and practical business tools.
-          </p>
-        </Reveal>
-        <div className="projects-grid">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} wide={i === 0} />
-          ))}
-        </div>
-        <p className="asset-note">
-          Project visuals will appear here when screenshots are added to the
-          matching asset folders.
-        </p>
+        <Reveal className="section-heading section-heading-split"><div><p className="eyebrow">03 / SELECTED WORK</p><h2>Ideas, made<br /><em>useful.</em></h2></div><p>Two projects shaped around practical language technology and business workflows.</p></Reveal>
+        <div className="projects-grid">{projects.map((project, index) => <ProjectCard key={project.id} project={project} wide={index === 0} />)}</div>
       </section>
+
       <section id="experience" className="section-shell experience-section">
-        <Reveal className="section-heading">
-          <p className="eyebrow">04 / EXPERIENCE</p>
-          <h2>
-            Leading with <em>care and clarity.</em>
-          </h2>
-        </Reveal>
-        <div className="experience-tabs" role="tablist">
-          <button
-            className={experience === "roles" ? "active" : ""}
-            onClick={() => setExperience("roles")}
-            role="tab"
-            aria-selected={experience === "roles"}
-          >
-            Professional & leadership
-          </button>
-          <button
-            className={experience === "events" ? "active" : ""}
-            onClick={() => setExperience("events")}
-            role="tab"
-            aria-selected={experience === "events"}
-          >
-            Events & activities
-          </button>
-        </div>
+        <Reveal className="section-heading section-heading-split experience-heading"><div><p className="eyebrow">04 / EXPERIENCE</p><h2>Leadership that<br /><em>keeps things moving.</em></h2></div><p>Experience across student governance, communications, and events—where clear coordination matters.</p></Reveal>
+        <div className="experience-control"><p>Explore</p><div className="experience-tabs" role="tablist" aria-label="Experience type"><button className={experience === "roles" ? "active" : ""} onClick={() => setExperience("roles")} role="tab" aria-selected={experience === "roles"}>Roles <span>{roles.length}</span></button><button className={experience === "events" ? "active" : ""} onClick={() => setExperience("events")} role="tab" aria-selected={experience === "events"}>Events <span>{events.length}</span></button></div></div>
         <AnimatePresence mode="wait">
           {experience === "roles" ? (
-            <motion.div
-              key="roles"
-              className="role-list"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {roles.map((role, i) => (
-                <article className="role-row" key={role.organization}>
-                  <span className="role-number">0{i + 1}</span>
-                  <div>
-                    <p>{role.period}</p>
-                    <h3>{role.organization}</h3>
-                    <b>{role.title}</b>
-                  </div>
-                  <p className="role-text">{role.text}</p>
-                  <ArrowUpRight className="role-arrow" />
-                </article>
-              ))}
+            <motion.div key="roles" className="experience-list" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
+              {roles.map((role, index) => <article className="experience-card" key={role.organization}><span className="experience-number">0{index + 1}</span><div className="experience-title"><p>{role.period}</p><h3>{role.title}</h3><strong>{role.organization}</strong></div><p className="experience-summary">{role.text}</p><ArrowUpRight aria-hidden="true" /></article>)}
             </motion.div>
           ) : (
-            <motion.div
-              key="events"
-              className="events-grid"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {events.map((event) => (
-                <article className="event-card" key={event.name}>
-                  <AssetPlaceholder label={`${event.name} poster / photos`} />
-                  <div className="event-meta">
-                    <span>{event.date}</span>
-                    <span>{event.role}</span>
-                  </div>
-                  <h3>{event.name}</h3>
-                  <p>{event.detail}</p>
-                  <button onClick={() => setActiveEvent(event.name)}>
-                    Details <ChevronRight size={15} />
-                  </button>
-                </article>
-              ))}
+            <motion.div key="events" className="events-grid" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
+              {events.map((event, index) => <article className="event-card" key={event.name}><div className="event-top"><span>0{index + 1}</span><time>{event.date}</time></div><p className="event-role">{event.role}</p><h3>{event.name}</h3><p className="event-detail">{event.detail}</p><button onClick={() => setActiveEvent(event.name)}>View details <ChevronRight size={16} /></button></article>)}
             </motion.div>
           )}
         </AnimatePresence>
       </section>
-      <section className="section-shell achievements-section">
-        <Reveal className="achievement-intro">
-          <p className="eyebrow">05 / RECOGNITION</p>
-          <h2>
-            A growing record of <em>commitment.</em>
-          </h2>
-          <p>
-            Academic excellence, scholarships, and opportunities to contribute
-            beyond the classroom.
-          </p>
-        </Reveal>
-        <Reveal className="achievement-panel" delay={0.12}>
-          <div className="achievement-glow" />
-          {achievements.map((item, i) => (
-            <div className="achievement-row" key={item}>
-              <span>0{i + 1}</span>
-              <p>{item}</p>
-              <ArrowUpRight size={18} />
-            </div>
-          ))}
-        </Reveal>
+
+      <section className="section-shell recognition-section">
+        <Reveal className="section-heading recognition-heading"><p className="eyebrow">05 / RECOGNITION</p><h2>Progress worth<br /><em>showing up for.</em></h2><p>Academic achievements and opportunities that mark a steady commitment to learning.</p></Reveal>
+        <div className="recognition-grid">
+          {recognitionGroups.map((group, index) => <Reveal className="recognition-card" key={group.title} delay={index * 0.07}><div className="recognition-card-top"><span>0{index + 1}</span><p>{group.title}</p></div><ul>{group.items.map((item) => <li key={item}>{item}</li>)}</ul></Reveal>)}
+        </div>
       </section>
+
       <section id="contact" className="section-shell contact-section">
-        <div className="contact-grid" aria-hidden="true" />
-        <Reveal className="contact-copy">
-          <p className="eyebrow">06 / CONTACT</p>
-          <h2>
-            Let&apos;s build something <em>together.</em>
-          </h2>
-          <p>
-            I&apos;m open to professional opportunities, collaborations, and
-            conversations around technology, software, and student-led
-            initiatives.
-          </p>
-          <a className="contact-email" href="mailto:sokewinsang@gmail.com">
-            sokewinsang@gmail.com <ArrowUpRight />
-          </a>
-          <p className="contact-location">
-            <MapPin size={15} /> Phnom Penh, Cambodia
-          </p>
-        </Reveal>
-        <Reveal className="contact-form" delay={0.15}>
-          <p>Send a note</p>
-          <form
-            onSubmit={(e: FormEvent) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-          >
-            <label>
-              Name
-              <input required name="name" placeholder="Your name" />
-            </label>
-            <label>
-              Email
-              <input
-                required
-                type="email"
-                name="email"
-                placeholder="you@example.com"
-              />
-            </label>
-            <label>
-              Message
-              <textarea
-                required
-                name="message"
-                placeholder="How can we work together?"
-                rows={4}
-              />
-            </label>
-            <button className="button button-primary" type="submit">
-              {sent ? "Thanks - I’ll be in touch" : "Send message"}{" "}
-              <MoveRight size={17} />
-            </button>
-          </form>
-          <small>
-            Form ready for email-service connection. For now, please email
-            directly.
-          </small>
-        </Reveal>
+        <Reveal className="contact-main"><p className="eyebrow">06 / CONTACT</p><h2>Open to meaningful<br /><em>opportunities.</em></h2><p>I&apos;m glad to hear about professional opportunities, collaborations, and technology or student-led initiatives.</p><a className="contact-email" href="mailto:sokewinsang@gmail.com"><Mail size={19} /> sokewinsang@gmail.com <ArrowUpRight size={18} /></a></Reveal>
+        <Reveal className="contact-details" delay={0.1}><div><span>Location</span><strong><MapPin size={16} /> Phnom Penh, Cambodia</strong></div><div><span>Best for</span><strong>Projects · opportunities · collaboration</strong></div><div><span>Availability</span><strong><i /> Open to connect</strong></div></Reveal>
       </section>
-      <footer>
-        <span>© 2026 SANG Sokewin</span>
-        <a href="#home">
-          Back to top <ArrowUpRight size={14} />
-        </a>
-      </footer>
+
+      <footer><span>© 2026 SANG Sokewin</span><a href="#home">Back to top <ArrowUpRight size={14} /></a></footer>
+
       <AnimatePresence>
-        {activeEvent && (
-          <motion.div
-            className="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActiveEvent(null)}
-          >
-            <motion.div
-              className="event-modal"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                aria-label="Close event details"
-                onClick={() => setActiveEvent(null)}
-              >
-                <X />
-              </button>
-              <p className="eyebrow">EVENT DETAILS</p>
-              <h3>{activeEvent}</h3>
-              <p>
-                {events.find((event) => event.name === activeEvent)?.detail}
-              </p>
-              <AssetPlaceholder label="Gallery ready for event photos" />
-            </motion.div>
-          </motion.div>
-        )}
+        {activeEvent && <motion.div className="modal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveEvent(null)}><motion.div className="event-modal" initial={{ y: 18, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 18, opacity: 0 }} onClick={(event) => event.stopPropagation()}><button aria-label="Close event details" onClick={() => setActiveEvent(null)}><X /></button><p className="eyebrow">EVENT DETAILS</p><h3>{activeEvent}</h3><p>{events.find((event) => event.name === activeEvent)?.detail}</p></motion.div></motion.div>}
       </AnimatePresence>
     </main>
   );
 }
-function ProjectCard({
-  project,
-  wide,
-}: {
-  project: (typeof projects)[number];
-  wide: boolean;
-}) {
+
+function ProjectCard({ project, wide }: { project: (typeof projects)[number]; wide: boolean }) {
   const ref = useRef<HTMLElement>(null);
-  function tilt(e: MouseEvent<HTMLElement>) {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty(
-      "--rx",
-      `${((e.clientY - r.top) / r.height - 0.5) * -4}deg`,
-    );
-    el.style.setProperty(
-      "--ry",
-      `${((e.clientX - r.left) / r.width - 0.5) * 5}deg`,
-    );
+  function tilt(event: MouseEvent<HTMLElement>) {
+    const element = ref.current;
+    if (!element) return;
+    const rect = element.getBoundingClientRect();
+    element.style.setProperty("--rx", `${((event.clientY - rect.top) / rect.height - 0.5) * -3}deg`);
+    element.style.setProperty("--ry", `${((event.clientX - rect.left) / rect.width - 0.5) * 3}deg`);
   }
   return (
     <Reveal>
-      <article
-        ref={ref}
-        className={`project-card ${wide ? "project-wide" : ""}`}
-        onMouseMove={tilt}
-        onMouseLeave={() => {
-          ref.current?.style.setProperty("--rx", "0deg");
-          ref.current?.style.setProperty("--ry", "0deg");
-        }}
-      >
-        <div className="project-top">
-          <span>{project.number}</span>
-          <span>CASE STUDY / IN PROGRESS</span>
-        </div>
-        <AssetPlaceholder
-          className="project-image"
-          label={`${project.name} screenshot / add later`}
-        />
-        <div className="project-info">
-          <div>
-            <p>{project.label}</p>
-            <h3>{project.name}</h3>
-          </div>
-          <ArrowUpRight />
-        </div>
-        <p className="project-description">{project.description}</p>
-        <p className="project-details">{project.details}</p>
-        <div className="tag-list">
-          {project.technologies.map((tech) => (
-            <span key={tech}>{tech}</span>
-          ))}
-        </div>
+      <article ref={ref} className={`project-card ${wide ? "project-wide" : ""}`} onMouseMove={tilt} onMouseLeave={() => { ref.current?.style.setProperty("--rx", "0deg"); ref.current?.style.setProperty("--ry", "0deg"); }}>
+        <div className={`project-visual ${project.id}`}><span>{project.number}</span><p>{project.label}</p><div aria-hidden="true" /></div>
+        <div className="project-info"><div><p>{project.label}</p><h3>{project.name}</h3></div><ArrowUpRight /></div>
+        <p className="project-description">{project.description}</p><p className="project-details">{project.details}</p>
+        <div className="tag-list">{project.technologies.map((tech) => <span key={tech}>{tech}</span>)}</div>
       </article>
     </Reveal>
   );
