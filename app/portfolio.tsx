@@ -73,7 +73,6 @@ export default function Portfolio() {
           {nav.map((item) => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}
         </nav>
         <div className="nav-actions">
-          <span className="availability"><i /> Open to opportunities</span>
           <button
             className="theme-toggle"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
