@@ -41,9 +41,9 @@ const recognitionGroups = [
 ];
 
 const aboutPhotos = [
-  { src: "/assets/profile/gallery-study.jpg", alt: "Sang Sokewin by a lake", position: "50% 58%" },
-  { src: "/assets/profile/portrait-primary.jpg", alt: "Sang Sokewin in a striped shirt", position: "50% 37%" },
-  { src: "/assets/profile/portrait-secondary-converted.jpg", alt: "Sang Sokewin taking a mirror selfie", position: "50% 57%" },
+  { src: "./assets/profile/gallery-study.jpg", alt: "Sang Sokewin by a lake", position: "50% 58%" },
+  { src: "./assets/profile/portrait-primary.jpg", alt: "Sang Sokewin in a striped shirt", position: "50% 37%" },
+  { src: "./assets/profile/portrait-secondary-converted.jpg", alt: "Sang Sokewin taking a mirror selfie", position: "50% 57%" },
 ] as const;
 
 function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -131,7 +131,7 @@ export default function Portfolio() {
           <div className="hero-signoff"><span><i /> Open to meaningful opportunities</span><a href="#about">Scroll to explore <ArrowDown size={15} /></a></div>
         </motion.div>
         <motion.aside className="hero-profile" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.08 }}>
-          <img className="hero-portrait" src="/assets/profile/gallery-campus.jpg" alt="Sang Sokewin holding a certificate" />
+          <img className="hero-portrait" src="./assets/profile/gallery-campus.jpg" alt="Sang Sokewin holding a certificate" />
         </motion.aside>
       </section>
 
@@ -247,5 +247,5 @@ function ProjectCard({ project, wide, onOpen }: { project: (typeof projects)[num
 }
 
 function SynctypeHomepagePreview({ alt = "" }: { alt?: string }) {
-  return <img className="synctype-homepage-preview" src="/assets/projects/synctype/homepage-screenshot.png" alt={alt} />;
+  return <img className="synctype-homepage-preview" src="./assets/projects/synctype/homepage-screenshot.png" alt={alt} />;
 }

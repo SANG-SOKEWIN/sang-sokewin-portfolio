@@ -1,7 +1,7 @@
 export const portfolio = {
   name: "SANG Sokewin", location: "Phnom Penh, Cambodia", email: "sokewinsang@gmail.com",
   cvLink: "mailto:sokewinsang@gmail.com?subject=CV%20request%20from%20portfolio",
-  photo: "/assets/profile/profile-photo.jpg",
+  photo: "./assets/profile/profile-photo.jpg",
 } as const;
 
 export const stack = [
@@ -11,8 +11,8 @@ export const stack = [
 ];
 
 export const projects = [
-  { id: "synctype", number: "01", name: "Synctype", label: "Romanized Khmer to Khmer Script Translator", description: "A full-stack translation tool that turns Romanized Khmer into Khmer script through dictionary lookup and MarianMT-powered translation modes.", details: "Built API endpoints, frontend integration, translation modes, and keyboard shortcut support.", technologies: ["FastAPI", "React", "Vite", "Python", "JavaScript"], image: "/assets/projects/synctype/cover.jpg" },
-  { id: "invoice-generator", number: "02", name: "Invoice Generator", label: "Desktop business workflow application", description: "A desktop tool for creating, managing, and tracking invoices with customer, inventory, tax, and document workflows.", details: "Includes authentication, invoice history and search, automatic totals, and Word document export from a custom template.", technologies: ["Python", "SQLite", "customtkinter", "docxtpl"], image: "/assets/projects/invoice-generator/cover.jpg" },
+  { id: "synctype", number: "01", name: "Synctype", label: "Romanized Khmer to Khmer Script Translator", description: "A full-stack translation tool that turns Romanized Khmer into Khmer script through dictionary lookup and MarianMT-powered translation modes.", details: "Built API endpoints, frontend integration, translation modes, and keyboard shortcut support.", technologies: ["FastAPI", "React", "Vite", "Python", "JavaScript"], image: "./assets/projects/synctype/cover.jpg" },
+  { id: "invoice-generator", number: "02", name: "Invoice Generator", label: "Desktop business workflow application", description: "A desktop tool for creating, managing, and tracking invoices with customer, inventory, tax, and document workflows.", details: "Includes authentication, invoice history and search, automatic totals, and Word document export from a custom template.", technologies: ["Python", "SQLite", "customtkinter", "docxtpl"], image: "./assets/projects/invoice-generator/cover.jpg" },
 ];
 
 export const roles = [
