@@ -98,7 +98,32 @@ h2 em { font-style: normal; color: var(--accent); }
   gap: clamp(48px, 9vw, 145px);
   padding-top: 82px;
 }
-.hero::before { content: ""; position: absolute; z-index: -1; inset: 110px -7vw 60px; opacity: .58; background-image: linear-gradient(to right, color-mix(in srgb, var(--line) 72%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--line) 72%, transparent) 1px, transparent 1px), radial-gradient(circle at 72% 44%, color-mix(in srgb, var(--accent-soft) 88%, transparent), transparent 37%); background-size: 44px 44px, 44px 44px, 100% 100%; mask-image: linear-gradient(90deg, transparent, black 23%, black 84%, transparent); }
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 105px -8vw 52px;
+  border-radius: 46% 54% 53% 47% / 45% 42% 58% 55%;
+  opacity: .9;
+  background:
+    radial-gradient(ellipse 64% 67% at 77% 49%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 71%),
+    radial-gradient(circle at 57% 36%, color-mix(in srgb, var(--accent-soft) 98%, transparent), transparent 29%),
+    linear-gradient(118deg, transparent 0 39%, color-mix(in srgb, var(--surface) 64%, transparent) 50%, transparent 61%);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 71px;
+  right: -132px;
+  width: min(60vw, 720px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: .72;
+  pointer-events: none;
+  background: repeating-radial-gradient(ellipse at center, transparent 0 42px, color-mix(in srgb, var(--accent) 22%, transparent) 43px 44px, transparent 45px 76px);
+  mask-image: radial-gradient(circle at center, black 0 56%, transparent 72%);
+}
 .hero-copy { position: relative; z-index: 1; padding: 90px 0 60px; }
 .hero-copy::before { content: ""; position: absolute; top: 90px; left: -20px; width: 3px; height: 92px; border-radius: 999px; background: var(--accent); }
 .hero h1 { margin: 0; font-size: clamp(60px, 7.7vw, 116px); line-height: .91; font-weight: 800; }
@@ -287,7 +312,8 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
   .mobile-nav { position: absolute; top: 58px; left: 16px; right: 16px; display: grid; gap: 4px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
   .mobile-nav a { padding: 10px; color: var(--muted); font-size: 14px; font-weight: 600; }
   .hero { grid-template-columns: 1fr; gap: 25px; padding-top: 70px; }
-  .hero::before { inset: 88px -20px 35px; background-size: 37px 37px, 37px 37px, 100% 100%; }
+  .hero::before { inset: 88px -20px 35px; }
+  .hero::after { top: 98px; right: -158px; width: 610px; }
   .hero-copy { padding: 105px 0 15px; }
   .hero-copy::before { top: 105px; left: -13px; }
   .hero-profile { height: 330px; max-width: 510px; width: 100%; margin-bottom: 65px; }
@@ -317,6 +343,7 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
   .hero-description { margin: 24px 0; font-size: 16px; }
   .hero-facts { gap: 17px; }
   .hero-signoff { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .hero::after { top: 145px; right: -205px; width: 530px; opacity: .58; }
   .hero-profile { box-shadow: var(--shadow), 8px 8px 0 color-mix(in srgb, var(--accent-soft) 88%, transparent); }
   .hero-profile { height: 290px; border-radius: 35% 35% 25% 25% / 22% 22% 38% 38%; }
   h2 { font-size: 42px; }
