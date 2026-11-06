@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  ArrowDown,
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
@@ -123,6 +124,7 @@ export default function Portfolio() {
             <div><span>Based in</span><strong>Phnom Penh, Cambodia</strong></div>
             <div><span>Currently</span><strong>AUPP + Fort Hays State</strong></div>
           </div>
+          <div className="hero-signoff"><span><i /> Open to meaningful opportunities</span><a href="#about">Scroll to explore <ArrowDown size={15} /></a></div>
         </motion.div>
         <motion.aside className="hero-profile" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.65, delay: 0.08 }}>
           <img className="hero-portrait" src="/assets/profile/gallery-campus.jpg" alt="Sang Sokewin holding a certificate" />
