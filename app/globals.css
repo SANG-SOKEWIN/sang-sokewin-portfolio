@@ -146,6 +146,8 @@ h2 em { font-style: normal; color: var(--accent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-dot { animation: none; }
+  .milestone, .tech-card, .project-card, .experience-card, .event-card, .recognition-card { transition: none; }
+  .milestone:hover, .tech-card:hover, .project-card:hover, .experience-card:hover, .event-card:hover, .recognition-card:hover { transform: none; }
 }
 .hero-copy { position: relative; z-index: 1; padding: 90px 0 60px; }
 .hero-copy::before { content: ""; position: absolute; top: 90px; left: -20px; width: 3px; height: 92px; border-radius: 999px; background: var(--accent); }
@@ -196,7 +198,7 @@ h2 em { font-style: normal; color: var(--accent); }
 .stat-grid strong { display: block; color: var(--accent); font-size: 28px; letter-spacing: -.06em; }
 .stat-grid span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.4; }
 .milestone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 70px; }
-.milestone { min-height: 235px; padding: 25px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.milestone { min-height: 235px; padding: 25px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); will-change: transform; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
 .milestone p { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
 .milestone h3 { margin: 45px 0 14px; font-size: 22px; line-height: 1.08; }
 .milestone span { display: block; color: var(--muted); font-size: 12px; line-height: 1.65; }
@@ -208,15 +210,13 @@ h2 em { font-style: normal; color: var(--accent); }
 .tech-filters button:hover { border-color: var(--text); color: var(--text); }
 .tech-filters button.active { border-color: var(--inverse); color: var(--inverse-text); background: var(--inverse); }
 .tech-card-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-.tech-card { min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
-.tech-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: var(--shadow); }
+.tech-card { min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); will-change: transform; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .tech-glyph { display: grid; min-width: 55px; min-height: 48px; place-items: center; font-size: 25px; font-weight: 800; letter-spacing: -.09em; }
 .tech-card p { margin: 0; color: var(--text); font-size: 15px; font-weight: 600; text-align: center; }
 .tech-card small { color: var(--muted); font-size: 10px; }
 
 .projects-grid { display: grid; grid-template-columns: 1.23fr .77fr; gap: 16px; margin-top: 60px; }
-.project-card { --rx: 0deg; --ry: 0deg; height: 100%; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .18s ease, box-shadow .18s ease; }
-.project-card:hover { box-shadow: var(--shadow); }
+.project-card { --rx: 0deg; --ry: 0deg; --lift: 0px; height: 100%; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); will-change: transform; transform: translateY(var(--lift)) perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .project-card-interactive { cursor: pointer; }
 .project-card-interactive:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 58%, transparent); outline-offset: 4px; }
 .project-visual.synctype { padding: 0; background: #f8f8f4; }
@@ -248,7 +248,7 @@ h2 em { font-style: normal; color: var(--accent); }
 .experience-tabs button span { margin-left: 4px; color: inherit; opacity: .7; }
 .experience-tabs button.active { color: var(--inverse-text); background: var(--inverse); }
 .experience-list { border-bottom: 1px solid var(--line); }
-.experience-card { display: grid; grid-template-columns: 58px minmax(220px, .75fr) minmax(260px, 1.25fr) 22px; gap: 28px; align-items: center; padding: 28px 10px; border-top: 1px solid var(--line); }
+.experience-card { display: grid; grid-template-columns: 58px minmax(220px, .75fr) minmax(260px, 1.25fr) 22px; gap: 28px; align-items: center; padding: 28px 10px; border-top: 1px solid var(--line); will-change: transform; transition: transform .2s ease, background-color .2s ease, padding-inline .2s ease; }
 .experience-number { color: var(--accent); font-size: 12px; font-weight: 700; }
 .experience-title p { margin-bottom: 5px; color: var(--muted); font-size: 11px; font-weight: 600; }
 .experience-title h3 { margin: 0 0 5px; font-size: 23px; line-height: 1.05; }
@@ -256,7 +256,7 @@ h2 em { font-style: normal; color: var(--accent); }
 .experience-summary { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .experience-card > svg { color: var(--accent); }
 .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
-.event-card { min-height: 284px; display: flex; flex-direction: column; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.event-card { min-height: 284px; display: flex; flex-direction: column; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); will-change: transform; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
 .event-top { display: flex; justify-content: space-between; align-items: center; color: var(--accent); font-size: 11px; font-weight: 700; }
 .event-top time { color: var(--muted); font-weight: 600; }
 .event-role { margin: 48px 0 12px; color: var(--accent); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
@@ -268,7 +268,7 @@ h2 em { font-style: normal; color: var(--accent); }
 .recognition-heading { max-width: 680px; }
 .recognition-heading > p:last-child { margin-top: 24px; }
 .recognition-grid { display: grid; grid-template-columns: 1.1fr 1.3fr .9fr; gap: 14px; margin-top: 52px; }
-.recognition-card { min-height: 250px; padding: 21px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+.recognition-card { min-height: 250px; padding: 21px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); will-change: transform; transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
 .recognition-card:first-child { color: var(--inverse-text); border-color: var(--inverse); background: var(--inverse); }
 .recognition-card-top { display: flex; align-items: center; justify-content: space-between; }
 .recognition-card-top span { color: var(--accent); font-size: 12px; font-weight: 800; }
@@ -276,6 +276,17 @@ h2 em { font-style: normal; color: var(--accent); }
 .recognition-card ul { display: grid; gap: 13px; margin: 62px 0 0; padding: 0; list-style: none; }
 .recognition-card li { position: relative; padding-left: 16px; font-size: 15px; line-height: 1.38; font-weight: 600; letter-spacing: -.02em; }
 .recognition-card li::before { content: ""; position: absolute; width: 6px; height: 6px; left: 0; top: .47em; border-radius: 50%; background: var(--accent); }
+
+@media (hover: hover) {
+  .milestone:hover, .tech-card:hover, .event-card:hover, .recognition-card:hover {
+    transform: translate3d(0, -6px, 0);
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+    box-shadow: var(--shadow);
+  }
+  .tech-card:hover { transform: translate3d(0, -6px, 0) scale(1.015); }
+  .project-card:hover { --lift: -6px; border-color: color-mix(in srgb, var(--accent) 52%, var(--line)); box-shadow: var(--shadow); }
+  .experience-card:hover { padding-inline: 16px; background: color-mix(in srgb, var(--accent-soft) 38%, transparent); transform: translateX(5px); }
+}
 
 .contact-section { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(350px, .95fr); gap: clamp(50px, 11vw, 160px); align-items: end; padding-bottom: 145px; }
 .contact-main > p:not(.eyebrow) { max-width: 530px; margin: 27px 0 30px; color: var(--muted); font-size: 16px; line-height: 1.75; }
