@@ -67,6 +67,7 @@ export default function Portfolio() {
   const [experience, setExperience] = useState<"roles" | "events">("roles");
   const [techFilter, setTechFilter] = useState("All");
   const [activeEvent, setActiveEvent] = useState<string | null>(null);
+  const [activeProject, setActiveProject] = useState<"synctype" | null>(null);
   const [aboutPhotoIndex, setAboutPhotoIndex] = useState(0);
 
   useEffect(() => {
@@ -177,7 +178,7 @@ export default function Portfolio() {
 
       <section id="projects" className="section-shell projects-section">
         <Reveal className="section-heading section-heading-split"><div><p className="eyebrow">03 / SELECTED WORK</p><h2>Ideas, made<br /><em>useful.</em></h2></div><p>Two projects shaped around practical language technology and business workflows.</p></Reveal>
-        <div className="projects-grid">{projects.map((project, index) => <ProjectCard key={project.id} project={project} wide={index === 0} />)}</div>
+        <div className="projects-grid">{projects.map((project, index) => <ProjectCard key={project.id} project={project} wide={index === 0} onOpen={project.id === "synctype" ? () => setActiveProject("synctype") : undefined} />)}</div>
       </section>
 
       <section id="experience" className="section-shell experience-section">
@@ -212,12 +213,13 @@ export default function Portfolio() {
 
       <AnimatePresence>
         {activeEvent && <motion.div className="modal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveEvent(null)}><motion.div className="event-modal" initial={{ y: 18, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 18, opacity: 0 }} onClick={(event) => event.stopPropagation()}><button aria-label="Close event details" onClick={() => setActiveEvent(null)}><X /></button><p className="eyebrow">EVENT DETAILS</p><h3>{activeEvent}</h3><p>{events.find((event) => event.name === activeEvent)?.detail}</p></motion.div></motion.div>}
+        {activeProject === "synctype" && <motion.div className="modal-backdrop project-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveProject(null)}><motion.article className="project-modal" role="dialog" aria-modal="true" aria-labelledby="synctype-modal-title" initial={{ y: 24, opacity: 0, scale: 0.985 }} animate={{ y: 0, opacity: 1, scale: 1 }} exit={{ y: 24, opacity: 0, scale: 0.985 }} onClick={(event) => event.stopPropagation()}><button className="project-modal-close" aria-label="Close Synctype project details" onClick={() => setActiveProject(null)}><X /></button><header className="project-modal-header"><p className="eyebrow">SELECTED WORK / 01</p><h2 id="synctype-modal-title">Synctype</h2><p>Romanized Khmer to Khmer Script Translator</p></header><div className="synctype-preview" aria-hidden="true"><div className="synctype-preview-top"><span>Synctype</span><small>Romanized Khmer → Khmer script</small></div><div className="synctype-workspace"><div><span>Romanized Khmer</span><p>Som tos, khnhom chhmouh Sokewin.</p></div><ArrowUpRight size={20} /><div><span>Khmer script</span><p>សួស្តី</p></div></div></div><div className="project-modal-content"><section><h3>Overview</h3><p>Synctype is a full-stack language tool that converts Romanized Khmer into Khmer script through dictionary lookup and MarianMT-powered translation modes.</p><div className="project-modal-tags">{projects[0].technologies.map((technology) => <span key={technology}>{technology}</span>)}</div></section><div className="project-story"><section><h3>The problem</h3><p>Romanized Khmer is often typed with phonetic Latin letters, but dependable conversion into native Khmer script is difficult without the right language tools.</p></section><section><h3>The solution</h3><p>Synctype brings translation modes, a clear web interface, and keyboard shortcuts together so users can move from Romanized text to Khmer script more easily.</p></section></div><div className="project-modal-actions"><a className="project-code-link" href="#home" onClick={() => setActiveProject(null)}>View code <ArrowUpRight size={17} /></a><a className="project-demo-link" href="https://synctype-translator.vercel.app/" target="_blank" rel="noreferrer">Live demo <ArrowUpRight size={17} /></a></div></div></motion.article></motion.div>}
       </AnimatePresence>
     </main>
   );
 }
 
-function ProjectCard({ project, wide }: { project: (typeof projects)[number]; wide: boolean }) {
+function ProjectCard({ project, wide, onOpen }: { project: (typeof projects)[number]; wide: boolean; onOpen?: () => void }) {
   const ref = useRef<HTMLElement>(null);
   function tilt(event: MouseEvent<HTMLElement>) {
     const element = ref.current;
@@ -228,7 +230,7 @@ function ProjectCard({ project, wide }: { project: (typeof projects)[number]; wi
   }
   return (
     <Reveal>
-      <article ref={ref} className={`project-card ${wide ? "project-wide" : ""}`} onMouseMove={tilt} onMouseLeave={() => { ref.current?.style.setProperty("--rx", "0deg"); ref.current?.style.setProperty("--ry", "0deg"); }}>
+      <article ref={ref} className={`project-card ${wide ? "project-wide" : ""} ${onOpen ? "project-card-interactive" : ""}`} onMouseMove={tilt} onMouseLeave={() => { ref.current?.style.setProperty("--rx", "0deg"); ref.current?.style.setProperty("--ry", "0deg"); }} onClick={onOpen} onKeyDown={(event) => { if (onOpen && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); onOpen(); } }} role={onOpen ? "button" : undefined} tabIndex={onOpen ? 0 : undefined} aria-label={onOpen ? `Open ${project.name} project details` : undefined}>
         <div className={`project-visual ${project.id}`}><span>{project.number}</span><p>{project.label}</p><div aria-hidden="true" /></div>
         <div className="project-info"><div><p>{project.label}</p><h3>{project.name}</h3></div><ArrowUpRight /></div>
         <p className="project-description">{project.description}</p><p className="project-details">{project.details}</p>
