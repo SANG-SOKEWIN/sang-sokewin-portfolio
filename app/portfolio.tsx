@@ -2,15 +2,21 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  Atom,
   ArrowDown,
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
+  Cloud,
+  Database,
+  GitBranch,
+  GitFork,
   Mail,
   MapPin,
   Menu,
   Moon,
   Sun,
+  Triangle,
   X,
 } from "lucide-react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
@@ -19,19 +25,17 @@ import { achievements, events, milestones, projects, roles } from "./content";
 const nav = ["Home", "About", "Stack", "Projects", "Experience", "Contact"];
 const techItems = [
   { name: "Python", group: "Languages", glyph: "Py", color: "#4e90ca" },
-  { name: "Java", group: "Languages", glyph: "J", color: "#d86645" },
-  { name: "C++", group: "Languages", glyph: "C+", color: "#5d8cf7" },
   { name: "JavaScript", group: "Languages", glyph: "JS", color: "#d8b836" },
-  { name: "HTML", group: "Languages", glyph: "</>", color: "#e25b41" },
-  { name: "SQLite", group: "Data", glyph: "SQL", color: "#328eb3" },
+  { name: "HTML / CSS", group: "Languages", glyph: "</>", color: "#e25b41" },
   { name: "FastAPI", group: "Frameworks", glyph: "F", color: "#159875" },
-  { name: "React", group: "Frameworks", glyph: "◌", color: "#2baed5" },
-  { name: "Vite", group: "Frameworks", glyph: "V", color: "#755edc" },
-  { name: "customtkinter", group: "Frameworks", glyph: "Tk", color: "#4f8fcf" },
-  { name: "docxtpl", group: "Frameworks", glyph: "DOC", color: "#568fc3" },
-  { name: "Microsoft Excel", group: "Tools", glyph: "X", color: "#1e9c5a" },
-  { name: "Microsoft Office", group: "Tools", glyph: "O", color: "#e16745" },
-  { name: "Google Workspace", group: "Tools", glyph: "G", color: "#4d83de" },
+  { name: "React", group: "Frameworks", glyph: <Atom size={34} strokeWidth={1.8} />, color: "#2baed5" },
+  { name: "PostgreSQL", group: "Data & Cloud", glyph: <Database size={32} strokeWidth={1.85} />, color: "#4169e1" },
+  { name: "Supabase", group: "Data & Cloud", glyph: <Triangle size={30} fill="currentColor" strokeWidth={0} />, color: "#3ecf8e" },
+  { name: "AWS", group: "Data & Cloud", glyph: "aws", color: "#ff9900" },
+  { name: "Vercel", group: "Data & Cloud", glyph: <Triangle size={29} fill="currentColor" strokeWidth={0} />, color: "currentColor" },
+  { name: "Render", group: "Data & Cloud", glyph: <Cloud size={34} strokeWidth={1.8} />, color: "#46e3c2" },
+  { name: "Git", group: "Tools", glyph: <GitBranch size={32} strokeWidth={1.85} />, color: "#f1502f" },
+  { name: "GitHub", group: "Tools", glyph: <GitFork size={33} strokeWidth={1.85} />, color: "currentColor" },
 ] as const;
 
 const recognitionGroups = [
@@ -175,7 +179,7 @@ export default function Portfolio() {
       <section id="stack" className="section-shell stack-section">
         <Reveal className="section-heading stack-heading"><p className="eyebrow">02 / TECH STACK</p><h2>Technologies I work with.</h2><p>Tools and languages I use to take an idea from outline to working software.</p></Reveal>
         <div className="tech-filters" role="tablist" aria-label="Technology category">
-          {["All", "Languages", "Frameworks", "Data", "Tools"].map((filter) => <button key={filter} className={techFilter === filter ? "active" : ""} onClick={() => setTechFilter(filter)} role="tab" aria-selected={techFilter === filter}>{filter}</button>)}
+          {["All", "Languages", "Frameworks", "Data & Cloud", "Tools"].map((filter) => <button key={filter} className={techFilter === filter ? "active" : ""} onClick={() => setTechFilter(filter)} role="tab" aria-selected={techFilter === filter}>{filter}</button>)}
         </div>
         <div className="tech-card-grid">
           {techItems.filter((item) => techFilter === "All" || item.group === techFilter).map((item, index) => <motion.article className="tech-card" key={item.name} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, delay: index * 0.025 }}><span className="tech-glyph" style={{ color: item.color }}>{item.glyph}</span><p>{item.name}</p><small>{item.group}</small></motion.article>)}
