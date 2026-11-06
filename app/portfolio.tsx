@@ -116,6 +116,10 @@ export default function Portfolio() {
       </header>
 
       <section id="home" className="section-shell hero">
+        <span className="hero-dot hero-dot-one" aria-hidden="true" />
+        <span className="hero-dot hero-dot-two" aria-hidden="true" />
+        <span className="hero-dot hero-dot-three" aria-hidden="true" />
+        <span className="hero-dot hero-dot-four" aria-hidden="true" />
         <motion.div className="hero-copy" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
           <p className="eyebrow">SOFTWARE · SYSTEMS · COMMUNITY</p>
           <h1>Hi, I&apos;m Sang<br /><span>Sokewin.</span></h1>
