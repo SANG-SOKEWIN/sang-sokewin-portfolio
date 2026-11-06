@@ -25,6 +25,8 @@ import { achievements, events, milestones, projects, roles } from "./content";
 const nav = ["Home", "About", "Stack", "Projects", "Experience", "Contact"];
 const techItems = [
   { name: "Python", group: "Languages", glyph: "Py", color: "#4e90ca" },
+  { name: "Java", group: "Languages", glyph: "J", color: "#d86645" },
+  { name: "C++", group: "Languages", glyph: "C+", color: "#5d8cf7" },
   { name: "JavaScript", group: "Languages", glyph: "JS", color: "#d8b836" },
   { name: "HTML / CSS", group: "Languages", glyph: "</>", color: "#e25b41" },
   { name: "FastAPI", group: "Frameworks", glyph: "F", color: "#159875" },
@@ -74,6 +76,7 @@ export default function Portfolio() {
   const [activeEvent, setActiveEvent] = useState<string | null>(null);
   const [activeProject, setActiveProject] = useState<"synctype" | null>(null);
   const [aboutPhotoIndex, setAboutPhotoIndex] = useState(0);
+  const cursorFollower = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -86,12 +89,35 @@ export default function Portfolio() {
     return () => window.clearInterval(rotation);
   }, [reduceMotion]);
 
+  useEffect(() => {
+    const cursor = cursorFollower.current;
+    const finePointer = window.matchMedia("(pointer: fine)");
+    if (!cursor || !finePointer.matches) return;
+
+    const moveCursor = (event: PointerEvent) => {
+      cursor.style.setProperty("--cursor-x", `${event.clientX}px`);
+      cursor.style.setProperty("--cursor-y", `${event.clientY}px`);
+      cursor.classList.add("is-visible");
+    };
+    const hideCursor = () => cursor.classList.remove("is-visible");
+
+    window.addEventListener("pointermove", moveCursor);
+    window.addEventListener("blur", hideCursor);
+    document.addEventListener("visibilitychange", hideCursor);
+    return () => {
+      window.removeEventListener("pointermove", moveCursor);
+      window.removeEventListener("blur", hideCursor);
+      document.removeEventListener("visibilitychange", hideCursor);
+    };
+  }, []);
+
   const changeAboutPhoto = (direction: 1 | -1) => {
     setAboutPhotoIndex((index) => (index + direction + aboutPhotos.length) % aboutPhotos.length);
   };
 
   return (
     <main>
+      <div ref={cursorFollower} className="cursor-follower" aria-hidden="true" />
       <header className="nav-wrap">
         <a href="#home" className="monogram" aria-label="Back to home">SK.</a>
         <nav className="desktop-nav" aria-label="Primary navigation">
