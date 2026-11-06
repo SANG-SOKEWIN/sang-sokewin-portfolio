@@ -235,15 +235,15 @@ h2 em { font-style: normal; color: var(--accent); }
 .milestone p { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
 .milestone h3 { margin: 45px 0 14px; font-size: 22px; line-height: 1.08; }
 .milestone span { display: block; color: var(--muted); font-size: 12px; line-height: 1.65; }
-.stack-section { width: min(1450px, calc(100% - 64px)); }
+.stack-section { width: min(1260px, calc(100% - 64px)); }
 .stack-heading { max-width: 980px; }
 .stack-heading h2 { font-size: clamp(52px, 6.4vw, 92px); }
 .tech-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 65px 0 30px; }
 .tech-filters button { padding: 11px 19px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: transparent; font-size: 13px; font-weight: 600; transition: .18s ease; }
 .tech-filters button:hover { border-color: var(--text); color: var(--text); }
 .tech-filters button.active { border-color: var(--inverse); color: var(--inverse-text); background: var(--inverse); }
-.tech-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 11px; }
-.tech-card { min-height: 128px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); will-change: transform; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.tech-card-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 11px; }
+.tech-card { flex: 0 1 142px; min-height: 128px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); will-change: transform; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .tech-glyph { display: grid; min-width: 48px; min-height: 40px; place-items: center; font-size: 23px; font-weight: 800; letter-spacing: -.09em; }
 .tech-card p { margin: 0; color: var(--text); font-size: 14px; font-weight: 600; text-align: center; }
 .tech-card small { color: var(--muted); font-size: 10px; }
@@ -365,7 +365,6 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
 
 @media (max-width: 1100px) {
   .hero { gap: 60px; }
-  .tech-card-grid { grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); }
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .experience-card { grid-template-columns: 44px .9fr 1.1fr 20px; gap: 18px; }
 }
@@ -396,7 +395,7 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
   .milestone-grid { grid-template-columns: 1fr; margin-top: 52px; }
   .milestone { min-height: 185px; }
   .milestone h3 { margin-top: 30px; }
-  .tech-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tech-card { flex-basis: calc((100% - 22px) / 3); }
   .projects-grid { grid-template-columns: 1fr; }
   .project-wide .project-visual { min-height: 280px; }
   .experience-card { grid-template-columns: 36px 1fr 20px; padding: 23px 2px; }
@@ -430,8 +429,8 @@ footer a { display: inline-flex; align-items: center; gap: 5px; color: var(--tex
   .stack-heading h2 { font-size: 45px; }
   .tech-filters { margin-top: 42px; }
   .tech-filters button { padding: 9px 14px; font-size: 12px; }
-  .tech-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .tech-card { min-height: 118px; }
+  .tech-card-grid { gap: 10px; }
+  .tech-card { flex-basis: calc((100% - 10px) / 2); min-height: 118px; }
   .tech-card p { font-size: 13px; }
   .project-card { padding: 12px; }
   .project-visual, .project-wide .project-visual { min-height: 220px; padding: 17px; }
